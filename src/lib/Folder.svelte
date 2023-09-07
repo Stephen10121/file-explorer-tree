@@ -11,7 +11,7 @@
     export let showFiles = false;
     export let folderSelected: undefined | string = undefined;
     export let fileSelected: undefined | string = undefined;
-
+    export let parents: string[] = [];
     let opened = false;
 </script>
 
@@ -20,12 +20,12 @@
         <button disabled={!folders} class="opener {opened ? "open" : ""}" on:click={() => opened=!opened} title="{!folders ? "" :(opened ? "Collapse folder" : "Expand folder")}">
             <img src={triangle} alt="Triangle button">
         </button>
-        <Button selected={folderSelected} {id} buttonType="folder" on:folderClicked {name} />
+        <Button {parents} selected={folderSelected} {id} buttonType="folder" on:folderClicked {name} />
     </div>
     {#if folders && opened}
         <div class="sub-folders" transition:slide>
             {#each folders as folder}
-                <svelte:self {fileSelected} {folderSelected} on:fileClicked on:folderClicked name={folder.name} id={folder.id} files={folder.files} folders={folder.folders} {showFiles} />
+                <svelte:self parents={[...parents, id]} {fileSelected} {folderSelected} on:fileClicked on:folderClicked name={folder.name} id={folder.id} files={folder.files} folders={folder.folders} {showFiles} />
             {/each}
         </div>
     {/if}

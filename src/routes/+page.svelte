@@ -1,5 +1,6 @@
 <script lang="ts">
-    import FileTree from "$lib/FileTree.svelte";
+    import DandDtest from "$lib/DandDtest.svelte";
+import FileTree from "$lib/FileTree.svelte";
     import type { TreeStructure } from "$lib/treeTypes.js";
 
     let showFiles = false;
@@ -16,7 +17,11 @@
             id: "1",
             folders: [{
                 name: "Folder 1.5",
-                id: "f1.5"
+                id: "f1.5",
+                folders: [{
+                    name: "Folder 1.55",
+                    id: "f1.55"
+                }]
             }]
         }, {
             name: "Folder 2",
@@ -49,7 +54,7 @@
     let folderSelected: undefined | string;
     let fileSelected: undefined | string;
 </script>
-
+<h1>Hi MOM</h1>
 <label>
     <p>Show Files: </p>
     <input type="checkbox" bind:checked={showFiles}>
@@ -57,6 +62,7 @@
 
 <FileTree {fileSelected} {folderSelected} {structure} {showFiles} on:folderClicked={(e) => folderSelected=e.detail} on:fileClicked={(e) => fileSelected=e.detail} />
 
+<DandDtest />
 <style>
     label {
         display: flex;
