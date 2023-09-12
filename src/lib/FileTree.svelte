@@ -11,14 +11,18 @@
 </script>
 
 <div>
-    {#each structure.folders as folder}
-        <Folder {fileSelected} {folderSelected} name={folder.name} id={folder.id} folders={folder.folders} files={folder.files} {showFiles} on:folderClicked on:fileClicked />
+    {#each Object.keys(structure) as folder}
+        {#if folder!=="G_files"}
+            <Folder {fileSelected} {folderSelected} name={folder} id={folder} folders={structure[folder]} files={structure[folder].G_files} {showFiles} on:folderClicked on:fileClicked on:dragAction />
+        {/if}
     {/each}
 </div>
-{#if structure.files && showFiles}
+{#if structure.G_files && showFiles}
     <div transition:slide>
-        {#each structure.files as file}
-            <div><Button selected={fileSelected} id={file.id} buttonType="file" on:fileClicked name={file.name} /></div>
+        {#each structure.G_files as file}
+            <div>
+                <Button selected={fileSelected} id={file.name} buttonType="file" on:fileClicked name={file.name} on:dragAction />
+            </div>
         {/each}
     </div>
 {/if}

@@ -1,58 +1,38 @@
 <script lang="ts">
-    import DandDtest from "$lib/DandDtest.svelte";
-import FileTree from "$lib/FileTree.svelte";
-    import type { TreeStructure } from "$lib/treeTypes.js";
+    import { invalidateAll } from "$app/navigation";
+    import FileTree from "$lib/FileTree.svelte";
 
     let showFiles = false;
-    let structure: TreeStructure = {
-        files: [{
-            name: "Home File",
-            id: "file1"
-        }, {
-            name: "Home File2",
-            id: "file1.5"
-        }],
-        folders: [{
-            name: "Folder 1",
-            id: "1",
-            folders: [{
-                name: "Folder 1.5",
-                id: "f1.5",
-                folders: [{
-                    name: "Folder 1.55",
-                    id: "f1.55"
-                }]
-            }]
-        }, {
-            name: "Folder 2",
-            id: "2",
-            files: [{
-                name: "File 2",
-                id: "file2"
-            }],
-            folders: [{
-                id: "f2.5",
-                name: "Folder 2.5",
-                files: [{
-                    name: "File 3",
-                    id: "file3",
-                }, {
-                    name: "File 3.1",
-                    id: "file3.1"
-                }]
-            }]
-        }, {
-            name: "Folder 3",
-            id: "3",
-            folders: [{
-                name: "Folder 3.5",
-                id: "f3.5"
-            }]
-        }]
-    };
 
-    let folderSelected: undefined | string;
-    let fileSelected: undefined | string;
+    function build_path(...args: string[]) {
+        return args.map((part, i) => {
+            if (i === 0) {
+            return part.trim().replace(/[\/]*$/g, '')
+            } else {
+            return part.trim().replace(/(^[\/]*|[\/]*$)/g, '')
+            }
+        }).filter(x=>x.length).join('/')
+    }
+
+    async function somethingDragged({ detail }: { detail: { selected: string, target: string, targetParents: string[], selectedParents: string[] } }) {
+        let from = build_path("/", detail.selectedParents.join("/"), detail.selected);
+        let to = build_path("/", detail.targetParents.join("/"), detail.target,detail.selected);
+        console.log({from, to});
+
+        const res = await fetch("/api/move", {
+            method: "POST",
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ from, to }),
+        });
+
+        invalidateAll();
+    }
+
+    let selected: undefined | string;
+
+    export let data;
 </script>
 <h1>Hi MOM</h1>
 <label>
@@ -60,11 +40,8 @@ import FileTree from "$lib/FileTree.svelte";
     <input type="checkbox" bind:checked={showFiles}>
 </label>
 
-<FileTree {fileSelected} {folderSelected} {structure} {showFiles} on:folderClicked={(e) => folderSelected=e.detail} on:fileClicked={(e) => fileSelected=e.detail} />
+<FileTree folderSelected={selected} fileSelected={selected} structure={data.directory.allFiles} {showFiles} on:folderClicked={(e) => selected=e.detail} on:fileClicked={(e) => selected=e.detail} on:dragAction={somethingDragged} />
 
-<DandDtest />
 <style>
-    label {
-        display: flex;
-    }
+    label {display: flex}
 </style>

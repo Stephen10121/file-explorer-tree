@@ -4,6 +4,9 @@ specifiers:
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.20.4
   '@sveltejs/package': ^2.0.0
+  '@types/fs-extra': ^11.0.1
+  '@types/node': ^20.5.9
+  fs-extra: ^11.1.1
   publint: ^0.1.9
   svelte: ^4.0.5
   svelte-check: ^3.4.3
@@ -11,16 +14,21 @@ specifiers:
   typescript: ^5.0.0
   vite: ^4.4.2
 
+dependencies:
+  fs-extra: 11.1.1
+
 devDependencies:
   '@sveltejs/adapter-auto': 2.1.0_@sveltejs+kit@1.24.1
   '@sveltejs/kit': 1.24.1_svelte@4.2.0+vite@4.4.9
   '@sveltejs/package': 2.2.2_ixk2eghtwnuw7oxnomfunkjn2i
+  '@types/fs-extra': 11.0.1
+  '@types/node': 20.5.9
   publint: 0.1.16
   svelte: 4.2.0
   svelte-check: 3.5.1_svelte@4.2.0
   tslib: 2.6.2
   typescript: 5.2.2
-  vite: 4.4.9
+  vite: 4.4.9_@types+node@20.5.9
 
 packages:
 
@@ -317,7 +325,7 @@ packages:
       svelte: 4.2.0
       tiny-glob: 0.2.9
       undici: 5.23.0
-      vite: 4.4.9
+      vite: 4.4.9_@types+node@20.5.9
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -350,7 +358,7 @@ packages:
       '@sveltejs/vite-plugin-svelte': 2.4.5_svelte@4.2.0+vite@4.4.9
       debug: 4.3.4
       svelte: 4.2.0
-      vite: 4.4.9
+      vite: 4.4.9_@types+node@20.5.9
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -369,7 +377,7 @@ packages:
       magic-string: 0.30.3
       svelte: 4.2.0
       svelte-hmr: 0.15.3_svelte@4.2.0
-      vite: 4.4.9
+      vite: 4.4.9_@types+node@20.5.9
       vitefu: 0.2.4_vite@4.4.9
     transitivePeerDependencies:
       - supports-color
@@ -381,6 +389,23 @@ packages:
 
   /@types/estree/1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
+    dev: true
+
+  /@types/fs-extra/11.0.1:
+    resolution: {integrity: sha512-MxObHvNl4A69ofaTRU8DFqvgzzv8s9yRtaPPm5gud9HDNvpB3GPQFvNuTWAI59B9huVGV5jXYJwbCsmBsOGYWA==}
+    dependencies:
+      '@types/jsonfile': 6.1.1
+      '@types/node': 20.5.9
+    dev: true
+
+  /@types/jsonfile/6.1.1:
+    resolution: {integrity: sha512-GSgiRCVeapDN+3pqA35IkQwasaCh/0YFH5dEF6S88iDvEn901DjOeH3/QPY+XYP1DFzDZPvIvfeEgk+7br5png==}
+    dependencies:
+      '@types/node': 20.5.9
+    dev: true
+
+  /@types/node/20.5.9:
+    resolution: {integrity: sha512-PcGNd//40kHAS3sTlzKB9C9XL4K0sTup8nbG5lC14kzEteTNuAFh9u5nA0o5TWnSG2r/JNPRXFVcHJIIeRlmqQ==}
     dev: true
 
   /@types/pug/2.0.6:
@@ -603,6 +628,15 @@ packages:
       to-regex-range: 5.0.1
     dev: true
 
+  /fs-extra/11.1.1:
+    resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
+    engines: {node: '>=14.14'}
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+    dev: false
+
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
@@ -654,7 +688,6 @@ packages:
 
   /graceful-fs/4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
-    dev: true
 
   /ignore-walk/5.0.1:
     resolution: {integrity: sha512-yemi4pMf51WKT7khInJqAvsIGzoqYXblnsz0ql8tM+yi1EKYTY1evX4NAbJrLL/Aanr2HyZeluqU+Oi7MGHokw==}
@@ -715,6 +748,14 @@ packages:
     dependencies:
       '@types/estree': 1.0.1
     dev: true
+
+  /jsonfile/6.1.0:
+    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
+    dependencies:
+      universalify: 2.0.0
+    optionalDependencies:
+      graceful-fs: 4.2.11
+    dev: false
 
   /kleur/4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
@@ -1176,7 +1217,12 @@ packages:
       busboy: 1.6.0
     dev: true
 
-  /vite/4.4.9:
+  /universalify/2.0.0:
+    resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
+    engines: {node: '>= 10.0.0'}
+    dev: false
+
+  /vite/4.4.9_@types+node@20.5.9:
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -1204,6 +1250,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.5.9
       esbuild: 0.18.20
       postcss: 8.4.29
       rollup: 3.29.0
@@ -1219,7 +1266,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.4.9
+      vite: 4.4.9_@types+node@20.5.9
     dev: true
 
   /wrappy/1.0.2:

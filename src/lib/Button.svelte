@@ -10,18 +10,17 @@
     export let parents: string[] = [];
 
     const dispatch = createEventDispatcher();
-
-    $: data = {
-        on_dropzone(data: string) {
-            console.log(`Placing ${data} into ${id}`);
-        },
-        parents
-    }
 </script>
 
-<div class="button" use:dropzone={data}>
+<div class="button" use:dropzone={{
+    on_dropzone(data) {
+        dispatch("dragAction", { selected: data.id, target: id, targetParents: parents, selectedParents: data.parents });
+    },
+    parents,
+    buttonType
+}}>
     <button class="{selected===id ? "selected" : ""}" on:click={() => dispatch(buttonType==="file" ? "fileClicked" : "folderClicked", id)} use:draggable={{id, currentDrag(id) {
-        $currentDragged = id
+        $currentDragged = {id, parents}
     },}}>{name}</button>
 </div>
 

@@ -24,17 +24,18 @@ export function draggable(node: HTMLElement, data: {id: string, currentDrag: (id
     }
 }
 
-export function dropzone(node: HTMLElement, options: { on_dropzone: (data: string) => void, parents: string[] }) {
+export function dropzone(node: HTMLElement, options: { on_dropzone: (data: {id: string, parents: string[]}) => void, parents: string[], buttonType: string }) {
+    if (options.buttonType ==="file")return
     let stateConfig = {
         dropEffect: "move",
         dragover_class: "droppable"
     }
     let optionsState = options;
-    let currentDragged2: string | null = null;
+    let currentDragged2: {id: string, parents: string[]} | null = null;
     currentDragged.subscribe(value => currentDragged2 = value);
 
     function handle_dragenter(e: DragEvent) {
-        if (currentDragged2 && options.parents.includes(currentDragged2)) return;
+        if (currentDragged2 && options.parents.includes(currentDragged2.id)) return;
         //@ts-ignore
         e.target.classList.add(stateConfig.dragover_class);
     }
@@ -46,7 +47,7 @@ export function dropzone(node: HTMLElement, options: { on_dropzone: (data: strin
 
     function handle_dragover(e: DragEvent) {
         e.preventDefault();
-        if (currentDragged2 && options.parents.includes(currentDragged2)) {
+        if (currentDragged2 && options.parents.includes(currentDragged2.id)) {
             //@ts-ignore
             e.dataTransfer.dropEffect = "none";
             return;
@@ -58,11 +59,10 @@ export function dropzone(node: HTMLElement, options: { on_dropzone: (data: strin
     function handle_drop(e: DragEvent) {
         e.preventDefault();
         
-        const data = e.dataTransfer?.getData("text/plain");
-        if (currentDragged2 && options.parents.includes(currentDragged2)) return;
+        if (currentDragged2 && options.parents.includes(currentDragged2.id)) return;
         //@ts-ignore
         e.target.classList.remove(stateConfig.dragover_class);
-        optionsState.on_dropzone(data!)
+        optionsState.on_dropzone(currentDragged2!)
     }
 
     node.addEventListener("dragenter", handle_dragenter);

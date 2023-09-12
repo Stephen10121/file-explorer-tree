@@ -17,23 +17,25 @@
 
 <div class="folder">
     <div class="buttons">
-        <button disabled={!folders} class="opener {opened ? "open" : ""}" on:click={() => opened=!opened} title="{!folders ? "" :(opened ? "Collapse folder" : "Expand folder")}">
+        <button disabled={Object.keys(folders).length + (showFiles?files.length:0) < 2} class="opener {opened ? "open" : ""}" on:click={() => opened=!opened} title="{!folders ? "" :(opened ? "Collapse folder" : "Expand folder")}">
             <img src={triangle} alt="Triangle button">
         </button>
-        <Button {parents} selected={folderSelected} {id} buttonType="folder" on:folderClicked {name} />
+        <Button {parents} selected={folderSelected} {id} buttonType="folder" on:folderClicked {name} on:dragAction />
     </div>
-    {#if folders && opened}
+    {#if Object.keys(folders).length + files.length > 1 && opened}
         <div class="sub-folders" transition:slide>
-            {#each folders as folder}
-                <svelte:self parents={[...parents, id]} {fileSelected} {folderSelected} on:fileClicked on:folderClicked name={folder.name} id={folder.id} files={folder.files} folders={folder.folders} {showFiles} />
+            {#each Object.keys(folders) as folder}
+                {#if folder!=="G_files"}
+                    <svelte:self on:dragAction parents={[...parents, id]} {fileSelected} {folderSelected} on:fileClicked on:folderClicked name={folder} id={folder} files={folders[folder].G_files} folders={folders[folder]} {showFiles} />
+                {/if}
+            {/each}
+            {#if files && showFiles}
+        <div class="files" transition:slide>
+            {#each files as file}
+                <Button selected={fileSelected} id={file.name} buttonType="file" on:fileClicked name={file.name} on:dragAction parents={[...parents, id]} />
             {/each}
         </div>
     {/if}
-    {#if files && showFiles}
-        <div class="files" transition:slide>
-            {#each files as file}
-                <Button selected={fileSelected} id={file.id} buttonType="file" on:fileClicked name={file.name} />
-            {/each}
         </div>
     {/if}
 </div>
